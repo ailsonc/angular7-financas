@@ -1,5 +1,5 @@
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Category } from '../models/category.model';
 import { CategoryService } from '../service/category.service';
@@ -25,11 +25,19 @@ export class CategoriesFormComponent implements OnInit, AfterContentChecked {
     this.setCurrentAction();
     this.buildCategoryForm();
     this.loadCategory();
-
   }
 
   ngAfterContentChecked(): void {
     this.setPageTitle();
+  }
+
+  submitForm() {
+    this.submittingForm = true;
+    if (this.currentAction === 'new') {
+      this.createCategory();
+    } else {
+      this.updateCategory();
+    }
   }
 
   // Private Methods
@@ -72,6 +80,46 @@ export class CategoriesFormComponent implements OnInit, AfterContentChecked {
     } else {
       const categoryName = this.category.name || '';
       this.pageTitle = 'Editar Categoria: ' + categoryName;
+    }
+  }
+
+  private createCategory() {
+    // Criando uam Category nova e atribuindo os valores de categoryForm a constante.
+    const category: Category = Object.assign(new Category(), this.categoryForm.value);
+    this.categoryService.create(category)
+      .subscribe(
+        data => this.actionsForSuccess(data),
+        error => this.actionsForError(error)
+      );
+  }
+
+  private updateCategory() {
+    // Criando uam Category nova e atribuindo os valores de categoryForm a constante.
+    const category: Category = Object.assign(new Category(), this.categoryForm.value);
+    this.categoryService.update(category)
+      .subscribe(
+        data => this.actionsForSuccess(data),
+        error => this.actionsForError(error)
+      );
+  }
+
+  private actionsForSuccess(category: Category) {
+    toastr.success('Solicitação processada com sucesso!');
+    this.submittingForm = false;
+    /* skipLocationChange: não salvar historico do navegador que passou na pagina
+       redirect/reload componen page */
+    this.router.navigateByUrl('categories', {skipLocationChange: true}).then(
+      () => this.router.navigate(['categories', category.id, 'edit'])
+    );
+  }
+
+  private actionsForError(error) {
+    toastr.error('Ocorreu um erro ao processada sua solicitação');
+    this.submittingForm = false;
+    if (error.status === 422) {
+      this.serverErrorMessages = JSON.parse(error._body).erros;
+    } else {
+      this.serverErrorMessages = ['Falha na comunicação com o servidor, Por favor, teste mais tarde.'];
     }
   }
 
