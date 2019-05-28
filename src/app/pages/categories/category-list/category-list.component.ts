@@ -3,11 +3,11 @@ import { Category } from '../models/category.model';
 import { CategoryService } from '../service/category.service';
 
 @Component({
-  selector: 'app-categories-list',
-  templateUrl: './categories-list.component.html',
-  styleUrls: ['./categories-list.component.scss']
+  selector: 'app-category-list',
+  templateUrl: './category-list.component.html',
+  styleUrls: ['./category-list.component.scss']
 })
-export class CategoriesListComponent implements OnInit {
+export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
 
   constructor(private categoryService: CategoryService) { }

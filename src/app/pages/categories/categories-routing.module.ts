@@ -1,26 +1,26 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { CategoriesListComponent } from './categories-list/categories-list.component';
-import { CategoriesFormComponent } from './categories-form/categories-form.component';
+import { CategoryListComponent } from './category-list/category-list.component';
+import { CategoryFormComponent } from './category-form/category-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CategoriesListComponent,
+    component: CategoryListComponent,
     data: {
       title: 'Categories List'
     }
   },
   {
     path: 'new',
-    component: CategoriesFormComponent,
+    component: CategoryFormComponent,
     data: {
       title: 'Categories Form'
     }
   },
   {
     path: ':id/edit',
-    component: CategoriesFormComponent,
+    component: CategoryFormComponent,
     data: {
       title: 'Categories Form'
     }
