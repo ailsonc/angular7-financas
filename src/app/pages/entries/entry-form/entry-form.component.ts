@@ -19,6 +19,27 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   submittingForm: boolean = false;
   entry: Entry = new Entry();
 
+  amountMask = {
+    mask: Number,
+    scale: 2,
+    thousandsSeparator: '', // any single char
+    padFractionalZeros: true, // if true, then pads zeros at end to the length of scale
+    normalizeZeros: true, // appends or removes zeros at ends
+    radix: ','  // fractional delimiter
+  };
+
+  ptBR = {
+    firstDayOfWeek: 0,
+    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+      'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    today: 'Hoje',
+    clear: 'Limpar'
+  };
+
   constructor(private entryService: EntryService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
