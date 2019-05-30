@@ -5,6 +5,8 @@ import { Entry } from '../models/entry.model';
 import { EntryService } from '../service/entry.service';
 import { switchMap} from 'rxjs/operators';
 import toastr from 'toastr';
+import { Category } from '../../categories/models/category.model';
+import { CategoryService } from '../../categories/service/category.service';
 
 @Component({
   selector: 'app-entry-form',
@@ -18,6 +20,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = null;
   submittingForm: boolean = false;
   entry: Entry = new Entry();
+  categories: Array<Category>;
 
   amountMask = {
     mask: Number,
@@ -40,12 +43,13 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     clear: 'Limpar'
   };
 
-  constructor(private entryService: EntryService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private entryService: EntryService, private categoryService: CategoryService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategories();
   }
 
   ngAfterContentChecked(): void {
@@ -61,8 +65,19 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map(
+      ([value, text]) => {
+        return {
+          value: value,
+          text: text
+        };
+      }
+    );
+ }
+
   // Private Methods
-  private setCurrentAction(){
+  private setCurrentAction() {
     if (this.route.snapshot.url[0].path === 'new') {
       this.currentAction = 'new';
     } else {
@@ -71,7 +86,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   }
 
-  private buildEntryForm(){
+  private buildEntryForm() {
     this.entryForm = this.formBuilder.group({
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
@@ -84,7 +99,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       });
   }
 
-  private loadEntry(){
+  private loadEntry() {
     if (this.currentAction === 'edit') {
       this.route.paramMap.pipe(
         switchMap(params => this.entryService.getById(+params.get('id')))
@@ -98,6 +113,12 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
         }
       );
     }
+  }
+
+  private loadCategories() {
+    this.categoryService.getAll().subscribe(
+      categories => this.categories = categories
+    );
   }
 
   private setPageTitle() {
