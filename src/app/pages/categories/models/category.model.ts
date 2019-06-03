@@ -8,4 +8,9 @@ export class Category extends BaseResourceModel {
   ) {
     super();
   }
+
+  // Copiar um Objeto Entry com assinatura.
+  static fromJson(jsonData: any): Category {
+    return Object.assign(new Category(), jsonData);
+  }
 }

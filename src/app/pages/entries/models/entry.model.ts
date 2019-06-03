@@ -21,6 +21,11 @@ export class Entry extends BaseResourceModel {
     revenue: 'Receita'
   };
 
+  // Copiar um Objeto Entry com assinatura.
+  static fromJson(jsonData: any): Entry {
+    return Object.assign(new Entry(), jsonData);
+  }
+
   get paidText(): string {
     return this.paid ? 'Pago' : 'Pendente';
   }

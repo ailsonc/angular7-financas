@@ -132,7 +132,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   private createEntry() {
     // Criando uam Entry nova e atribuindo os valores de entryForm a constante.
-    const entry: Entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry: Entry = Entry.fromJson(this.entryForm.value);
     this.entryService.create(entry)
       .subscribe(
         data => this.actionsForSuccess(data),
@@ -142,7 +142,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   private updateEntry() {
     // Criando uam Entry nova e atribuindo os valores de entryForm a constante.
-    const entry: Entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry: Entry = Entry.fromJson(this.entryForm.value);
     this.entryService.update(entry)
       .subscribe(
         data => this.actionsForSuccess(data),
