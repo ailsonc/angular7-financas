@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { BaseResourceService } from '../../../shared/servide/base-resource-service';
+import { BaseResourceService } from '../../../shared/services/base-resource-service';
 import { Entry } from '../models/entry.model';
 import { CategoryService } from '../../categories/service/category.service';
 
