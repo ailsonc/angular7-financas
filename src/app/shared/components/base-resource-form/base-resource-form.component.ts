@@ -113,8 +113,9 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
     protected actionsForSuccess(resource: T) {
         toastr.success('Solicitação processada com sucesso!');
         this.submittingForm = false;
-        const baseComponentPath: string = this.route.snapshot.url[0].path;
-        /* skipLocationChange: não salvar historico do navegador que passou na pagina
+        const baseComponentPath: string = this.route.snapshot.parent.routeConfig.path;
+        /* this.route.snapshot.url[0].path;
+           skipLocationChange: não salvar historico do navegador que passou na pagina
            redirect/reload componen page */
         this.router.navigateByUrl(baseComponentPath, { skipLocationChange: true }).then(
             () => this.router.navigate([baseComponentPath, resource.id, 'edit'])
