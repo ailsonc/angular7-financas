@@ -7,7 +7,6 @@ export abstract class BaseResourceListComponent<T extends BaseResourceModel> imp
 
   constructor(
     protected resourceService: BaseResourceService<T>,
-    protected jsonDataToResourceFn: (jsonData: any) => T
 ) {}
 
   ngOnInit() {
