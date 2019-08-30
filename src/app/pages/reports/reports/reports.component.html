@@ -11,13 +11,14 @@
       <div class="form-group col-md-7">
         <label for="month">Mês</label>
         <select #month name="month" id="month" class="form-control">
-          <option *ngFor="let monthName of monthNames" [value]="monthNames.indexOf(monthName)">{{monthName}}</option>-->
+          <option value="">Selecione um mês</option>
+          <option *ngFor="let item of monthList" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
       <div class="form-group col-md-5">
         <label for="year">Ano</label>
         <select #year name="year" id="year" class="form-control">
-          <option>Selecione um ano</option>
+          <option value="">Selecione um ano</option>
           <option *ngFor="let year of years" [value]="year">{{year}}</option>-->
         </select>
       </div>
@@ -38,7 +39,7 @@
     </div>
     <div class="card-body">
       <h3 class="card-title">
-        1
+        {{revenueTotal}}
       </h3>
     </div>
   </div>
@@ -49,7 +50,7 @@
     </div>
     <div class="card-body">
       <h3 class="card-title">
-        2
+        {{expenseTotal}}
       </h3>
     </div>
   </div>
@@ -60,7 +61,7 @@
     </div>
     <div class="card-body">
       <h3 class="card-title">
-        3
+        {{balance}}
       </h3>
     </div>
   </div>
@@ -69,10 +70,10 @@
 <hr>
 
 <div class="row mt-5 mb-4">
-<div class="col-md-6">
-  g1
-</div>
-<div class="col-md-6">
-    g2
+  <div class="col-md-6">
+    <p-chart type='bar' [data]="revenueChartData" [options]="chartOptions"></p-chart>
+  </div>
+  <div class="col-md-6">
+    <p-chart type='bar' [data]="expenseChartData" [options]="chartOptions"></p-chart>
   </div>
 </div>
