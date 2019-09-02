@@ -3,15 +3,16 @@ import { Category } from '../../categories/models/category.model';
 import { CategoryService } from '../../categories/service/category.service'; 
 import { Entry } from '../../entries/models/entry.model';
 import { EntryService } from '../../entries/service/entry.service';
-import { rootRoute } from '@angular/router/src/router_module';
-var currencyFormatter = require('currency-formatter');
+import * as currencyFormatter from 'currency-formatter';
+import toastr from 'toastr';
+
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-
+  submittingForm: boolean = false;
   monthList = [
     { value: 1, text: 'Janeiro' },
     { value: 2, text: 'Fevereiro' },
@@ -62,9 +63,11 @@ export class ReportsComponent implements OnInit {
   public generateReports() {
     const month = this.month.nativeElement.value;
     const year = this.year.nativeElement.value;
+    this.submittingForm = false;
   
     if(!month || !year) {
-      alert('Você precisa selecionar o Mês e o Ano para gerar os relatórios');
+      toastr.error('Você precisa selecionar o Mês e o Ano para gerar os relatórios');
+      //alert('Você precisa selecionar o Mês e o Ano para gerar os relatórios');
     } else {
       this.getByMounthAndYear(month,year);
     }
@@ -88,8 +91,22 @@ export class ReportsComponent implements OnInit {
 
   private setValues(entries: Entry[]) {
     this.entries = entries;
-    this.calculateBalance();
-    this.setChartData();
+    this.submittingForm = this.isEntries();
+    if (this.submittingForm) {
+      this.calculateBalance();
+      this.setChartData();
+    } else {
+      toastr.error('Não tem dados na sua solicitação');
+    }
+  }
+
+  private isEntries(): boolean {
+    console.log(this.entries.length);
+    if (this.entries.length > 0) {
+      return true
+    } else {
+      return false
+    }
   }
 
   private calculateBalance() {
